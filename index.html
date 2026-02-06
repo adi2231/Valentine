@@ -246,6 +246,7 @@
       color: #374151;
       margin: 16px 0;
       line-height: 1.6;
+      opacity: 1;
     }
 
     /* ENVELOPE AND LETTER ANIMATION */
@@ -321,6 +322,27 @@
       transform: translateY(0);
       opacity: 0;
       transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    /* Custom scrollbar styling */
+    .letter::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .letter::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .letter::-webkit-scrollbar-thumb {
+      background: #ff9ec7;
+      border-radius: 10px;
+    }
+
+    .letter::-webkit-scrollbar-thumb:hover {
+      background: #ff7aa2;
     }
 
     .letter.show {
@@ -467,7 +489,7 @@
     </svg>
 
     <!-- CUTE TIGER IMAGE -->
-    <img src="tiger.jpg" class="art" alt="Cute tiger" />
+    <img src="tiger.png" class="art" alt="Cute tiger" />
 
     <h1>Sanjali, will you be my Valentine?</h1>
 
@@ -729,12 +751,41 @@
       elements.zone.style.display = "none";
       elements.hint.style.display = "none";
       
-      // Show result
+      // Hide the tiger image
+      const tigerImage = document.querySelector('.art');
+      if (tigerImage) {
+        tigerImage.style.display = "none";
+      }
+      
+      // Show result section
       elements.result.style.display = "block";
       
       // Launch confetti celebration
       setupConfetti();
       launchConfetti();
+
+      // Show the heading and message first
+      const resultHeading = elements.result.querySelector('h2');
+      const resultMessage = elements.result.querySelector('.result-message');
+      
+      // Initially hide envelope
+      const envelopeContainer = document.getElementById('envelopeContainer');
+      envelopeContainer.style.display = 'none';
+      
+      // Show heading and message with animation
+      setTimeout(() => {
+        resultHeading.style.animation = 'popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        resultMessage.style.animation = 'popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        resultMessage.style.animationDelay = '0.2s';
+        resultMessage.style.opacity = '0';
+        resultMessage.style.animationFillMode = 'forwards';
+      }, 200);
+
+      // Show envelope after text appears
+      setTimeout(() => {
+        envelopeContainer.style.display = 'block';
+        envelopeContainer.style.animation = 'popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      }, 1200);
 
       // Trigger envelope animation
       setTimeout(() => {
@@ -748,7 +799,7 @@
         setTimeout(() => {
           letter.classList.add('show');
         }, 600);
-      }, 800);
+      }, 2000);
 
       // Optional: Add haptic feedback on mobile
       if (navigator.vibrate) {
